@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKSCIC Pujas Holiday Olympiad 2024</title>
+    <link rel="icon" href="https://scontent.fdac136-1.fna.fbcdn.net/v/t39.30808-6/311585282_130016103144070_4445441080960390158_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=qkyXsXqMz6gQ7kNvgFtKaHy&_nc_zt=23&_nc_ht=scontent.fdac136-1.fna&_nc_gid=AXjEQ0qGdegQ3d4XC1f9xQv&oh=00_AYCO68XIwfehVvN-IgC59TvjVabRoxLk5-69p-DHwYy52g&oe=671595CE">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('https://img.pikbest.com/backgrounds/20200214/vector-abstract-background-technology-electronic-circuit-design--v_1653130jpg!w700wp');
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        h1 {
+            color: #fff;
+        }
+        .logo {
+            width: 100px;
+            border-radius: 50%; /* গোল ফ্রেম */
+            border: 5px solid white;
+        }
+        #quiz-container {
+            display: none;
+            margin-top: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #timer {
+            font-size: 24px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff; /* নিওন ইফেক্ট */
+        }
+        .neon {
+            color: #fff;
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>AKSCIC Pujas Holiday Olympiad 2024</h1>
+    <img class="logo" src="https://scontent.fdac136-1.fna.fbcdn.net/v/t39.30808-6/311585282_130016103144070_4445441080960390158_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=qkyXsXqMz6gQ7kNvgFtKaHy&_nc_zt=23&_nc_ht=scontent.fdac136-1.fna&_nc_gid=AXjEQ0qGdegQ3d4XC1f9xQv&oh=00_AYCO68XIwfehVvN-IgC59TvjVabRoxLk5-69p-DHwYy52g&oe=671595CE" alt="ICT Club Logo">
+    
+    <div id="email-container">
+        <h2>আপনার ইমেইল প্রদান করুন</h2>
+        <input type="email" id="email" placeholder="আপনার Gmail" required>
+        <button id="email-submit">সাবমিট</button>
+    </div>
+
+    <div id="registration-container" style="display: none;">
+        <h2>নিবন্ধন করুন</h2>
+        <form id="registration-form">
+            <input type="text" id="name" placeholder="Name" required><br>
+            <input type="number" id="roll" placeholder="Mobile Number" required><br>
+            <input type="text" id="class" placeholder="Class" required><br>
+            <input type="text" id="section" placeholder="Sec" required><br>
+            <button type="submit">পরবর্তী</button>
+        </form>
+    </div>
+
+    <div id="quiz-container">
+        <h2>প্রশ্নাবলী</h2>
+        <div id="timer" class="neon">১০</div>
+        <div id="question"></div>
+        <button id="option1" class="option-button"></button>
+        <button id="option2" class="option-button"></button>
+        <button id="option3" class="option-button"></button>
+        <button id="option4" class="option-button"></button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("email-submit").addEventListener("click", function() {
+            const email = document.getElementById("email").value;
+            if (email) {
+                document.getElementById("email-container").style.display = "none";
+                document.getElementById("registration-container").style.display = "block";
+            }
+        });
+
+        document.getElementById("registration-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("registration-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            startQuiz();
+        });
+
+        const questions = [
+            {
+                question: "<b>১. টেলিফোনের আবিষ্কারক কে?</b>",
+                options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Guglielmo Marconi"],
+                answer: 0
+            },
+            {
+                question: "<b>২. World Wide Web-এর আবিষ্কারক কে?</b>",
+                options: ["Tim Berners-Lee", "Vint Cerf", "Mark Zuckerberg", "Bill Gates"],
+                answer: 0
+            },
+            {
+                question: "<b>৩. প্রথম কম্পিউটারের নাম কী?</b>",
+                options: ["ENIAC", "UNIVAC", "Colossus", "Z3"],
+                answer: 0
+            },
+            {
+                question: "<b>৪. কোন প্রযুক্তি ব্যবহার করে ডেটা ইন্টারনেটে প্রেরণ করা হয়?</b>",
+                options: ["FTP", "HTTP", "SMTP", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "<b>৫. সেলফোনের প্রথম ডিজিটাল প্রযুক্তি কখন তৈরি হয়েছিল?</b>",
+                options: ["1973", "1983", "1993", "2003"],
+                answer: 0
+            },
+            {
+                question: "<b>৬. কোন প্রযুক্তি ইনটারনেটের মাধ্যমে ইমেল পাঠানোর জন্য ব্যবহৃত হয়?</b>",
+                options: ["HTTP", "FTP", "SMTP", "IMAP"],
+                answer: 2
+            },
+            {
+                question: "<b>৭. প্রথম ইমেইল কবে পাঠানো হয়েছিল?</b>",
+                options: ["1965", "1971", "1982", "1990"],
+                answer: 1
+            },
+            {
+                question: "<b>৮. কোন ব্রাউজারটি প্রথমবারের মতো গ্রাফিকাল ইউজার ইন্টারফেস (GUI) চালু করে?</b>",
+                options: ["Netscape Navigator", "Internet Explorer", "Mosaic", "Opera"],
+                answer: 2
+            },
+            {
+                question: "<b>৯. কম্পিউটারে RAM-এর পূর্ণরূপ কী?</b>",
+                options: ["Read Access Memory", "Random Access Memory", "Read And Memory", "Random Access Module"],
+                answer: 1
+            },
+            {
+                question: "<b>১০. কোন ভাষাটি প্রথম প্রোগ্রামিং ভাষা হিসেবে গণ্য করা হয়?</b>",
+                options: ["Python", "Fortran", "COBOL", "Assembly"],
+                answer: 1
+            },
+            {
+                question: "<b>১১. কোন প্রতিষ্ঠান প্রথম পিসি বাজারে এনেছিল?</b>",
+                options: ["IBM", "Apple", "Microsoft", "Hewlett-Packard"],
+                answer: 0
+            },
+            {
+                question: "<b>১২. 'Cloud Computing' বলতে কী বোঝায়?</b>",
+                options: ["তথ্য সংরক্ষণের স্থান", "সফটওয়্যার তৈরি", "ভার্চুয়াল সার্ভার ব্যবহারের ব্যবস্থা", "সবকিছু"],
+                answer: 3
+            },
+            {
+                question: "<b>১৩. ইন্টারনেটের প্রাথমিক নকশাকার কে?</b>",
+                options: ["Tim Berners-Lee", "Vint Cerf", "Robert Kahn", "Marc Andreessen"],
+                answer: 1
+            },
+            {
+                question: "<b>১৪. কোন অপারেটিং সিস্টেমটি মুক্ত সোর্স সফটওয়্যার হিসেবে পরিচিত?</b>",
+                options: ["Windows", "macOS", "Linux", "Solaris"],
+                answer: 2
+            },
+            {
+                question: "<b>১৫. কম্পিউটার ভাইরাসের সৃষ্টি কখন হয়েছিল?</b>",
+                options: ["1980-এর দশক", "1990-এর দশক", "1970-এর দশক", "2000-এর দশক"],
+                answer: 0
+            },
+            {
+                question: "<b>১৬. কম্পিউটার নেটওয়ার্কের প্রধান উপাদান কী?</b>",
+                options: ["মেমরি", "CPU", "সিস্টেম সফটওয়্যার", "সার্ভার"],
+                answer: 3
+            },
+            {
+                question: "<b>১৭. ডিজিটাল চিত্রের পূর্ণরূপ কী?</b>",
+                options: ["Digital Characteristics", "Digital Images", "Digital Representation", "Digital Signal"],
+                answer: 3
+            },
+            {
+                question: "<b>১৮. কোন সিস্টেমটি হ্যাকিংয়ের বিরুদ্ধে সুরক্ষা দেয়?</b>",
+                options: ["Antivirus Software", "Malware", "Spyware", "All of the above"],
+                answer: 0
+            },
+            {
+                question: "<b>১৯. লিনাক্সের একটি জনপ্রিয় বিতরণ কী?</b>",
+                options: ["Ubuntu", "Windows", "macOS", "Solaris"],
+                answer: 0
+            },
+            {
+                question: "<b>২০. কোনো ডেটাবেজের পূর্ণরূপ কী?</b>",
+                options: ["DataBase", "DataBackup", "DataBus", "DataBoard"],
+                answer: 0
+            },
+            {
+                question: "<b>২১. প্রথম ভিডিও গেমটি কি ছিল?</b>",
+                options: ["Space Invaders", "Pong", "Tennis for Two", "Pac-Man"],
+                answer: 2
+            },
+            {
+                question: "<b>২২. ইন্টারনেটের সবচেয়ে বড় সুবিধা কি?</b>",
+                options: ["তথ্যের সহজ অ্যাক্সেস", "সোশ্যাল মিডিয়া", "অনলাইন শপিং", "ভিডিও স্ট্রিমিং"],
+                answer: 0
+            },
+            {
+                question: "<b>২৩. কোন ভাষা প্রাথমিকভাবে ওয়েব পেজ তৈরি করতে ব্যবহৃত হয়?</b>",
+                options: ["HTML", "CSS", "JavaScript", "PHP"],
+                answer: 0
+            },
+            {
+                question: "<b>২৪. কোন প্রযুক্তি ব্যবহার করে লোকেশন ট্র্যাকিং করা হয়?</b>",
+                options: ["GPS", "Bluetooth", "NFC", "Wi-Fi"],
+                answer: 0
+            },
+            {
+                question: "<b>২৫. অনলাইন নিরাপত্তার জন্য সবচেয়ে গুরুত্বপূর্ণ কী?</b>",
+                options: ["পাসওয়ার্ড", "ইমেল", "সোশ্যাল মিডিয়া", "ব্যাংক অ্যাকাউন্ট"],
+                answer: 0
+            },
+            {
+                question: "<b>২৬. ডেটা এনক্রিপশনের উদ্দেশ্য কী?</b>",
+                options: ["তথ্যের গোপনীয়তা রক্ষা করা", "তথ্যের পরিমাণ বাড়ানো", "তথ্যের গতি বাড়ানো", "তথ্যকে অকার্যকর করা"],
+                answer: 0
+            },
+            {
+                question: "<b>২৭. সাইবার সিকিউরিটির প্রধান উদ্দেশ্য কী?</b>",
+                options: ["ডেটা রক্ষা করা", "অফিস পরিচালনা করা", "কম্পিউটার তৈরি করা", "সফটওয়্যার বিকাশ করা"],
+                answer: 0
+            },
+            {
+                question: "<b>২৮. ভার্চুয়াল রিয়ালিটি কী?</b>",
+                options: ["ডেটা সংরক্ষণের প্রযুক্তি", "এটি অভিজ্ঞতার প্রযুক্তি", "তথ্য নিরাপত্তার প্রযুক্তি", "কম্পিউটারে গেম খেলার প্রযুক্তি"],
+                answer: 1
+            },
+            {
+                question: "<b>২৯. কৃত্রিম বুদ্ধিমত্তার ব্যবহারের একটি উদাহরণ কী?</b>",
+                options: ["রোবট", "ডেটাবেজ", "ওয়েবসাইট", "সোশ্যাল মিডিয়া"],
+                answer: 0
+            },
+            {
+                question: "<b>৩০. কম্পিউটার প্রোগ্রামিং এর প্রধান উদ্দেশ্য কী?</b>",
+                options: ["কোড লেখা", "অ্যালগরিদম তৈরি", "অ্যাপ্লিকেশন তৈরি", "সবকিছু"],
+                answer: 3
+            },
+            {
+                question: "<b>৩১. কোন প্রযুক্তি ডিজিটাল পেমেন্ট সিস্টেমে ব্যবহৃত হয়?</b>",
+                options: ["Cryptocurrency", "Debit Card", "Credit Card", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "<b>৩২. প্রথম স্মার্টফোন কোনটি?</b>",
+                options: ["iPhone", "Nokia 9000 Communicator", "Samsung Galaxy", "Blackberry"],
+                answer: 1
+            },
+            {
+                question: "<b>৩৩. সোশ্যাল মিডিয়ার প্রথম উদাহরণ কোনটি?</b>",
+                options: ["Facebook", "MySpace", "Twitter", "LinkedIn"],
+                answer: 1
+            },
+            {
+                question: "<b>৩৪. প্রথম ওয়েবসাইট কোনটি?</b>",
+                options: ["Google", "Amazon", "The World Wide Web", "Facebook"],
+                answer: 2
+            },
+            {
+                question: "<b>৩৫. 'Artificial Intelligence' এর অর্থ কি?</b>",
+                options: ["মানব মস্তিষ্কের প্রযুক্তিগত রূপ", "যন্ত্রের সাথে মানুষের কাজ করা", "কৃত্রিম বুদ্ধিমত্তা", "সবকিছু"],
+                answer: 2
+            },
+            {
+                question: "<b>৩৬. কোন প্রযুক্তি আভ্যন্তরীণ ডেটা সংরক্ষণের জন্য ব্যবহৃত হয়?</b>",
+                options: ["SSD", "HDD", "USB Drive", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "<b>৩৭. কোনও ইমেলের নিরাপত্তা বজায় রাখতে সবচেয়ে গুরুত্বপূর্ণ উপাদান কী?</b>",
+                options: ["পাসওয়ার্ড", "এনক্রিপশন", "সার্ভার", "এমেল ঠিকানা"],
+                answer: 1
+            },
+            {
+                question: "<b>৩৮. কম্পিউটারের কোন অংশটি CPU হিসাবে পরিচিত?</b>",
+                options: ["Central Processing Unit", "Control Processing Unit", "Central Power Unit", "Control Power Unit"],
+                answer: 0
+            },
+            {
+                question: "<b>৩৯. কোন প্রযুক্তি মেশিন লার্নিংয়ের জন্য ব্যবহৃত হয়?</b>",
+                options: ["Python", "Java", "C++", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "<b>৪০. তথ্য সংরক্ষণের জন্য কোন ডিভাইসটি ব্যবহৃত হয়?</b>",
+                options: ["RAM", "HDD", "CPU", "GPU"],
+                answer: 1
+            },
+            {
+                question: "<b>৪১. নেটওয়ার্কের কাজের জন্য কোন প্রোটোকল ব্যবহৃত হয়?</b>",
+                options: ["TCP/IP", "UDP", "HTTP", "HTTPS"],
+                answer: 0
+            },
+            {
+                question: "<b>৪২. কম্পিউটারে সিপিইউ-এর কাজ কী?</b>",
+                options: ["তথ্য প্রক্রিয়াকরণ", "তথ্য সংরক্ষণ", "তথ্য প্রেরণ", "তথ্য সংগ্রহ"],
+                answer: 0
+            },
+            {
+                question: "<b>৪৩. কোন প্রযুক্তি ভিডিও কনফারেন্সিংয়ের জন্য ব্যবহৃত হয়?</b>",
+                options: ["Zoom", "Skype", "Google Meet", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "<b>৪৪. উইন্ডোজের অপারেটিং সিস্টেমের প্রথম সংস্করণ কোনটি?</b>",
+                options: ["Windows 1.0", "Windows 3.1", "Windows 95", "Windows XP"],
+                answer: 0
+            },
+            {
+                question: "<b>৪৫. কোন অ্যাপ্লিকেশনটি অনলাইন শিক্ষার জন্য ব্যবহৃত হয়?</b>",
+                options: ["Microsoft Word", "Zoom", "Excel", "PowerPoint"],
+                answer: 1
+            },
+            {
+                question: "<b>৪৬. কোন প্রযুক্তি ইন্টারনেটের মাধ্যমে গেম খেলার জন্য ব্যবহৃত হয়?</b>",
+                options: ["Cloud Gaming", "Downloadable Games", "Console Games", "PC Games"],
+                answer: 0
+            },
+            {
+                question: "<b>৪৭. প্রথম ওয়ার্ল্ড ওয়াইড ওয়েব ব্রাউজার কোনটি?</b>",
+                options: ["Mosaic", "Netscape", "Internet Explorer", "Chrome"],
+                answer: 0
+            },
+            {
+                question: "<b>৪৮. পাসওয়ার্ড ব্যবস্থার প্রধান উদ্দেশ্য কী?</b>",
+                options: ["নিরাপত্তা রক্ষা করা", "তথ্য গোপন রাখা", "প্রবেশাধিকার নিয়ন্ত্রণ করা", "সবকিছু"],
+                answer: 3
+            },
+            {
+                question: "<b>৪৯. QR কোডের পূর্ণরূপ কী?</b>",
+                options: ["Quick Response Code", "Quality Response Code", "Quick Read Code", "Quality Read Code"],
+                answer: 0
+            },
+            {
+                question: "<b>৫০. সোশ্যাল মিডিয়ায় প্রথম কোন প্ল্যাটফর্মটি জনপ্রিয় হয়?</b>",
+                options: ["MySpace", "Facebook", "Twitter", "LinkedIn"],
+                answer: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 10;
+        let userEmail = "";
+
+        function startQuiz() {
+            userEmail = document.getElementById("email").value;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            clearTimeout(timer);
+            timeLeft = 10;
+            document.getElementById("timer").innerText = timeLeft;
+            const questionObj = questions[currentQuestion];
+            document.getElementById("question").innerHTML = questionObj.question;
+            document.getElementById("option1").innerText = questionObj.options[0];
+            document.getElementById("option2").innerText = questionObj.options[1];
+            document.getElementById("option3").innerText = questionObj.options[2];
+            document.getElementById("option4").innerText = questionObj.options[3];
+            startTimer();
+        }
+
+        function startTimer() {
+            timer = setInterval(function() {
+                timeLeft--;
+                document.getElementById("timer").innerText = timeLeft;
+                if (timeLeft === 0) {
+                    clearInterval(timer);
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        showQuestion();
+                    } else {
+                        endQuiz();
+                    }
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('.option-button').forEach((button, index) => {
+            button.addEventListener('click', function() {
+                if (index === questions[currentQuestion].answer) {
+                    score += 5; // ৫ মার্ক প্রতি সঠিক উত্তর
+                }
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    endQuiz();
+                }
+            });
+        });
+
+        function endQuiz() {
+            document.getElementById("result").innerText = `আপনার স্কোর: ${score} / ${questions.length * 5}`;
+            sendResultToEmail();
+        }
+
+        function sendResultToEmail() {
+            const email = userEmail;
+            const subject = "Quiz Result";
+            const body = `আপনার স্কোর: ${score} / ${questions.length * 5}`;
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`);
+        }
+    </script>
+</body>
+</html>
